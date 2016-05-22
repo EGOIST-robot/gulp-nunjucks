@@ -19,6 +19,11 @@ function compile(data, opts) {
 		var context = assign({}, data, file.data);
 		var filePath = file.path;
 		var env = (opts && opts.env) || new nunjucks.Environment(new nunjucks.FileSystemLoader(file.base), opts);
+		
+		if (opts && opts.extend) {
+			extend(env)
+			delete opts.extend
+		}
 
 		try {
 			file.contents = new Buffer(env.renderString(file.contents.toString(), context));
